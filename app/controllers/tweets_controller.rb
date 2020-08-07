@@ -12,10 +12,16 @@ class TweetsController < ApplicationController
     @tweet = TweetsTag.new(tweet_params)
     if @tweet.valid?
       @tweet.save
-      return redirect_to root_parh
+      return redirect_to root_path
     else
       render :new
     end
+  end
+
+  def search
+    return nil if params[:input] == ""
+    tag = Tag.where(['name LIKE ?', "%#{params[:input]}%"] )
+    render json:{ keyword: tag }
   end
 
   private
